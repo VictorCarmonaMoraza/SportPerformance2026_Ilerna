@@ -1,0 +1,210 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "sportPerformance API",
+    "version": "1.0.0",
+    "description": "API para gestionar usuarios, autenticación y registro en el sistema SportPerformance"
+  },
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/api/usuarios": {
+      "get": {
+        "tags": ["Usuarios"],
+        "summary": "Obtiene todos los usuarios registrados",
+        "description": "Devuelve la lista completa de usuarios registrados en el sistema, incluyendo su rol y fecha de creación.",
+        "responses": {
+          "200": {
+            "description": "Lista de usuarios obtenida correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "integer", "example": 200 },
+                "message": { "type": "string", "example": "Usuarios obtenidos correctamente" },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "integer", "example": 1 },
+                      "nameuser": { "type": "string", "example": "admin" },
+                      "email": { "type": "string", "example": "admin@sportperformance.com" },
+                      "rol": { "type": "string", "example": "admin" },
+                      "creado_en": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-10-30T12:32:14Z"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "status": 200,
+                "message": "Usuarios obtenidos correctamente",
+                "data": [
+                  {
+                    "id": 1,
+                    "nameuser": "admin",
+                    "email": "admin@sportperformance.com",
+                    "rol": "admin",
+                    "creado_en": "2025-10-30T12:32:14Z"
+                  },
+                  {
+                    "id": 2,
+                    "nameuser": "lgomez",
+                    "email": "laura.gomez@sportperformance.com",
+                    "rol": "deportista",
+                    "creado_en": "2025-10-30T12:33:10Z"
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor al obtener los usuarios"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": ["Autenticación"],
+        "summary": "Inicia sesión en el sistema",
+        "description": "Permite a un usuario iniciar sesión con su nombre de usuario y contraseña. Devuelve un token JWT y los datos del usuario y deportista asociados.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Credenciales",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nameuser": { "type": "string", "example": "lgomez" },
+                "password": { "type": "string", "example": "123456" }
+              },
+              "required": ["nameuser", "password"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login exitoso. Devuelve el token y la información del usuario.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "integer", "example": 200 },
+                "message": { "type": "string", "example": "Login correcto" },
+                "token": { "type": "string", "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." },
+                "usuario": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer", "example": 2 },
+                    "nameuser": { "type": "string", "example": "lgomez" },
+                    "email": { "type": "string", "example": "laura.gomez@sportperformance.com" },
+                    "rol": { "type": "string", "example": "deportista" }
+                  }
+                },
+                "deportista": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer", "example": 1 },
+                    "nombre": { "type": "string", "example": "Laura Gómez" },
+                    "edad": { "type": "integer", "example": 24 },
+                    "disciplina_deportiva": { "type": "string", "example": "Natación" },
+                    "nacionalidad": { "type": "string", "example": "España" },
+                    "telefono": { "type": "string", "example": "+34 678 912 345" }
+                  }
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "status": 200,
+                "message": "Login correcto",
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                "usuario": {
+                  "id": 2,
+                  "nameuser": "lgomez",
+                  "email": "laura.gomez@sportperformance.com",
+                  "rol": "deportista"
+                },
+                "deportista": {
+                  "id": 1,
+                  "nombre": "Laura Gómez",
+                  "edad": 24,
+                  "disciplina_deportiva": "Natación",
+                  "nacionalidad": "España",
+                  "telefono": "+34 678 912 345"
+                }
+              }
+            }
+          },
+          "401": { "description": "Contraseña incorrecta o token inválido" },
+          "404": { "description": "Usuario no encontrado" },
+          "500": { "description": "Error interno del servidor al iniciar sesión" }
+        }
+      }
+    },
+    "/api/register": {
+      "post": {
+        "tags": ["Registro"],
+        "summary": "Registra un nuevo usuario en el sistema",
+        "description": "Permite crear un nuevo usuario con nombre de usuario, email, contraseña y rol opcional.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "NuevoUsuario",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nameuser": { "type": "string", "example": "vcar" },
+                "email": { "type": "string", "example": "victor@sportperformance.com" },
+                "password": { "type": "string", "example": "123456" },
+                "rol": { "type": "string", "example": "admin" }
+              },
+              "required": ["nameuser", "email", "password"]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Usuario creado correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "integer", "example": 201 },
+                "message": { "type": "string", "example": "Usuario creado correctamente" },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "nameuser": { "type": "string", "example": "vcar" },
+                    "email": { "type": "string", "example": "victor@sportperformance.com" },
+                    "rol": { "type": "string", "example": "admin" }
+                  }
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "status": 201,
+                "message": "Usuario creado correctamente",
+                "data": {
+                  "nameuser": "vcar",
+                  "email": "victor@sportperformance.com",
+                  "rol": "admin"
+                }
+              }
+            }
+          },
+          "400": { "description": "Faltan campos obligatorios" },
+          "409": { "description": "El usuario o email ya existen" },
+          "500": { "description": "Error interno del servidor al registrar usuario" }
+        }
+      }
+    }
+  }
+}

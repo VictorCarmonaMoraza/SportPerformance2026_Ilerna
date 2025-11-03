@@ -28,8 +28,8 @@ except Exception as e:
     print("⚠️ Error al leer swagger.json:", e)
 
 # 🔹 Registrar blueprints
-app.register_blueprint(user_bp)
 app.register_blueprint(auth_bp)
+app.register_blueprint(user_bp)
 app.register_blueprint(register_bp)
 
 # 🔹 Configurar Swagger

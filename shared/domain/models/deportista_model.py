@@ -1,6 +1,6 @@
 # models/usuario_model.py
 from sqlalchemy import Column, Integer, String, Date, Float
-from db.base import Base
+from shared.domain.models.base import Base
 
 
 class Deportistas(Base):

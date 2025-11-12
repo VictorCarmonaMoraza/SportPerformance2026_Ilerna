@@ -5,9 +5,9 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from config.settings import settings
 from flask_cors import CORS
 
-from routes.auth.auth_routes import auth_bp
-from routes.register.register_routes import register_bp
-from routes.user.user_route import user_bp
+from shared.presentation.api.auth.auth_routes import auth_bp
+from shared.presentation.api.register.register_routes import register_bp
+from shared.presentation.api.user.user_route import user_bp
 import json
 import os
 

@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 from sqlalchemy import text
 from config.config_bd import engine
-from models.api.user_model import Users
+from shared.domain.models.user_model import Users
 
 user_bp = Blueprint("user_bp", __name__, url_prefix="/api")
 

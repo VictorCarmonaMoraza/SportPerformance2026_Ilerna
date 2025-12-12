@@ -21,7 +21,7 @@ class Settings:
     API_KEY = os.getenv("API_KEY")
 
     # Configuracion de la base de datos PostgreSQL
-    DATABASE_URL = "postgresql+psycopg2://sport_user:SportVictor@localhost:5432/sportPerformance"
+    DATABASE_URL = "postgresql+psycopg2://postgres:1234@localhost:5432/sportPerformance"
 
 
 # Instancia global de configuracion
